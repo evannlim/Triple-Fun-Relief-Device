@@ -10,6 +10,11 @@
 TFT_eSPI tft = TFT_eSPI();
 Servo myservo;
 
+// Pins
+const int ledPin = 2;
+const int lightSensorPin = 32;
+const int servoPin = 25;
+
 // Number coordinates
 const int x_coordinate = 0;
 const int y_coordinate = 0;
@@ -26,6 +31,11 @@ void setup() {
   tft.setTextSize(font_size);
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  // Initialize light sensor
+  pinMode(ledPin, OUTPUT);
+  pinMode(lightSensorPin, INPUT);
+  myservo.attach(servoPin);
 }
 
 void loop() {
