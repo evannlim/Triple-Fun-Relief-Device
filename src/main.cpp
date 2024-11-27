@@ -1,10 +1,13 @@
 #include <Arduino.h>
+#include <Wire.h>
 
 #include <TFT_eSPI.h>
 
 #include <Servo.h>
 #include <chrono>
 #include <iostream>
+
+#include "lightsensor.hpp"
 
 // Objects
 TFT_eSPI tft = TFT_eSPI();
@@ -15,10 +18,12 @@ const int ledPin = 2;
 const int lightSensorPin = 32;
 const int servoPin = 25;
 
-// Number coordinates
+// Attributes for printing onto LILYGO screen
 const int x_coordinate = 0;
 const int y_coordinate = 0;
 const int font_size = 50;
+
+int intensityScore;
 
 void setup() {
   Serial.begin(9600);
@@ -36,9 +41,12 @@ void setup() {
   pinMode(ledPin, OUTPUT);
   pinMode(lightSensorPin, INPUT);
   myservo.attach(servoPin);
+
+  intensityScore = 0;
 }
 
 void loop() {
-  tft.drawNumber(0, x_coordinate, y_coordinate);
-  delay(200);
+  intensityScore = lightSensorTick(myservo, servoPin, lightSensorPin);
+  tft.drawNumber(intensityScore, x_coordinate, y_coordinate);
+  delay(100);
 }
