@@ -1,10 +1,8 @@
 #include <SparkFunLSM6DSO.h>
 #include <Arduino.h>
-
-//Constant Values
-LSM6DSO myIMU;
+#include <Servo.h>
 
 //Function Declarations
 float gyroscopeSensorTick(Servo servo, const int servoPin);
-int convertAnalogToDegrees(int analogValue);
-int convertAnalogToIntensity(int analogueValue);
+int gyroscopeConvertAnalogToDegrees(int analogValue);
+int gyroscopeConvertAnalogToIntensity(int analogueValue);
