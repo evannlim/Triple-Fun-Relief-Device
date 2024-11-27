@@ -8,6 +8,8 @@ Takes in the light sensor's pin to read from it
 int lightSensorTick(Servo servo, const int servoPin, const int lightSensorPin) {
   int analogValue = analogRead(lightSensorPin);
 
+  Serial.println(analogValue);
+
   int degreeValue = convertAnalogToDegrees(analogValue);
   servo.write(degreeValue);
 

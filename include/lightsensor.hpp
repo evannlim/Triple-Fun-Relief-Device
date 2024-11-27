@@ -1,3 +1,7 @@
+#include <Servo.h>
+#include <chrono>
+#include <iostream>
+
 // constant values
 const int callibrateDuration = 10;
 const int maxDegree = 179;
