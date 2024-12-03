@@ -10,9 +10,6 @@ int lightSensorTick(Servo servo, const int servoPin, const int lightSensorPin) {
 
   Serial.println(analogValue);
 
-  int degreeValue = convertAnalogToDegrees(analogValue);
-  servo.write(degreeValue);
-
   return convertAnalogToIntensity(analogValue);
 }
 
