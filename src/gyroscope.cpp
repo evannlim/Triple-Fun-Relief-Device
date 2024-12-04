@@ -1,8 +1,10 @@
 #include <gyroscope.hpp>
 
 float gyroscopeSensorTick(LSM6DSO myIMU) {
-  return myIMU.readFloatGyroY();
+  int gyroReading = myIMU.readFloatGyroY();
+  return convertGyroReadingToIntensity(gyroReading);
 }
 
-int convertAnalogToIntensity(int analogueValue) {
-    return 0;
+int convertGyroReadingToIntensity(int gyroReading) {
+    return gyroReading;
+}
