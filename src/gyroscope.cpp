@@ -6,4 +6,3 @@ float gyroscopeSensorTick(LSM6DSO myIMU) {
 
 int convertAnalogToIntensity(int analogueValue) {
     return 0;
-}

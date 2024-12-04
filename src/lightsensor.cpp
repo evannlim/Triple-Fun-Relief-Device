@@ -9,10 +9,8 @@ int lightSensorTick(const int lightSensorPin) {
   int analogValue = analogRead(lightSensorPin);
 
   Serial.println(analogValue);
-
+  
   return convertAnalogToIntensity(analogValue);
 }
 
 int convertAnalogToIntensity(int analogValue) {
-  return 100 * (analogValue - minLightSensorValue) / (maxLightSensorValue - minLightSensorValue + 1);
-}
