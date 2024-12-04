@@ -3,4 +3,4 @@
 
 //Function Declarations
 float gyroscopeSensorTick(LSM6DSO myIMU);
-int convertAnalogToIntensity(int analogueValue);
+int convertGyroReadingToIntensity(int analogueValue);
