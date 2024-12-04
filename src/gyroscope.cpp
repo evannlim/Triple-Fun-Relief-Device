@@ -1,12 +1,9 @@
 #include <gyroscope.hpp>
 
-float gyroscopeSensorTick(Servo servo, const int servoPin) {
-  return myImu.readFloatGyroY();
+float gyroscopeSensorTick(LSM6DSO myIMU) {
+  return myIMU.readFloatGyroY();
 }
 
-int convertAnalogToDegrees(int analogValue) {
-    pass;
-}
 int convertAnalogToIntensity(int analogueValue) {
-    pass;
+    return 0;
 }
