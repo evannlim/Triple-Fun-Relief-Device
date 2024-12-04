@@ -14,5 +14,5 @@ int lightSensorTick(const int lightSensorPin) {
 }
 
 int convertAnalogToIntensity(int analogValue) {
-  return 101 * (intensityScore - minLightSensorValue) / (maxLightSensorValue - minLightSensorValue + 1);
+  return 101 * (analogValue - minLightSensorValue) / (maxLightSensorValue - minLightSensorValue + 1);
 }
