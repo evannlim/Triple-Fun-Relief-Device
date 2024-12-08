@@ -10,8 +10,8 @@
 
 #include "servo.hpp"
 #include "lightsensor.hpp"
+#include "button.hpp"
 #include "accelerometer.hpp"
-
 
 // Objects
 TFT_eSPI tft = TFT_eSPI(); // 135 x 240 resolution
@@ -24,6 +24,7 @@ const int yellowLedPin = 15;
 const int blueLedPin = 13;
 const int lightSensorPin = 32;
 const int servoPin = 25;
+const int buttonPin = 33;
 
 // Attributes for printing onto LILYGO screen
 const int x_coordinate = 0;
@@ -54,6 +55,7 @@ void setup() {
   pinMode(yellowLedPin, OUTPUT);
   pinMode(blueLedPin, OUTPUT);
   pinMode(lightSensorPin, INPUT);
+  pinMode(buttonPin, INPUT_PULLUP);
   myservo.attach(servoPin);
 
   // Initialize accelerometer board
@@ -105,12 +107,12 @@ void loop() {
   }
 
   while (not game_done) {
+    rndm_game_choice = 0;
     switch (rndm_game_choice) {
       //Button game
       case 0:
         digitalWrite(blueLedPin, HIGH);
-        game_done = true;
-        delay(2000);
+        intensityScore = buttonTickBPM(buttonPin, intensityScore, 20);
         break;
       //Light sensor game
       case 1:
