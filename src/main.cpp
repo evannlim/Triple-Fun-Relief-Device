@@ -147,6 +147,6 @@ void loop() {
   intensityScore = accelSensorTick(myIMU);
   tft.fillScreen(TFT_SKYBLUE);
   tft.drawNumber(intensityScore, x_coordinate, y_coordinate);
-  delay(10000);
+  delay(100);
 }
 */
