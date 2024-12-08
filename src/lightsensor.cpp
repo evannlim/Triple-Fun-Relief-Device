@@ -7,9 +7,6 @@ Takes in the light sensor's pin to read from it
 */
 int lightSensorTick(const int lightSensorPin) {
   int analogValue = analogRead(lightSensorPin);
-
-  Serial.println(analogValue);
-  
   return convertAnalogToIntensity(analogValue);
 }
 

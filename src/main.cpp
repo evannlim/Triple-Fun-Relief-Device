@@ -8,8 +8,10 @@
 #include <chrono>
 #include <iostream>
 
+#include "servo.hpp"
 #include "lightsensor.hpp"
 #include "accelerometer.hpp"
+
 
 // Objects
 TFT_eSPI tft = TFT_eSPI(); // 135 x 240 resolution
@@ -125,6 +127,7 @@ void loop() {
     }
     tft.fillRect(0, 60, 135, 50, TFT_BLACK);
     tft.drawNumber(intensityScore, x_coordinate, y_coordinate + 60);
+    myservo.write(convertIntensityToDegrees(intensityScore));
     if (intensityScore >= goal_intensity_score - 2 and intensityScore <= goal_intensity_score + 2) {
       ticksInGoalScore++;
       if (ticksInGoalScore >= 20) {
