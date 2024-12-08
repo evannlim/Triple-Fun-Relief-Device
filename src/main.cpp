@@ -8,8 +8,10 @@
 #include <chrono>
 #include <iostream>
 
+#include "servo.hpp"
 #include "lightsensor.hpp"
 #include "accelerometer.hpp"
+
 
 // Objects
 TFT_eSPI tft = TFT_eSPI(); // 135 x 240 resolution
@@ -123,8 +125,13 @@ void loop() {
         delay(50);
         break;
     }
+
+    // Display measured intensity score on screen and servo motor
     tft.fillRect(0, 60, 135, 50, TFT_BLACK);
     tft.drawNumber(intensityScore, x_coordinate, y_coordinate + 60);
+    myservo.write(convertIntensityToDegrees(intensityScore));
+
+    // Check if measured intensity score meets target intensity score for 20 game ticks
     if (intensityScore >= goal_intensity_score - 2 and intensityScore <= goal_intensity_score + 2) {
       ticksInGoalScore++;
       if (ticksInGoalScore >= 20) {
