@@ -12,7 +12,7 @@
 #include "accelerometer.hpp"
 
 // Objects
-TFT_eSPI tft = TFT_eSPI();
+TFT_eSPI tft = TFT_eSPI(); // 135 x 240 resolution
 Servo myservo;
 LSM6DSO myIMU;
 
@@ -73,10 +73,10 @@ void setup() {
 void loop() {
   game_done = false;
   ticksInGoalScore = 0;
-  rndm_game_choice = random(0,2);
+  rndm_game_choice = random(3);
   auto startTime = std::chrono::steady_clock::now();
 
-  goal_intensity_score = random(0, 100);
+  goal_intensity_score = random(0, 101);
 
   tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
 
@@ -120,11 +120,10 @@ void loop() {
       case 2:
         digitalWrite(redLedPin, HIGH);
         intensityScore = accelSensorTick(myIMU);
-        game_done = true;
-        delay(2000);
+        delay(50);
         break;
     }
-
+    tft.fillRect(0, 60, 135, 30, TFT_BLACK);
     tft.drawNumber(intensityScore, x_coordinate, y_coordinate + 60);
     if (intensityScore >= goal_intensity_score - 2 and intensityScore <= goal_intensity_score + 2) {
       ticksInGoalScore++;
