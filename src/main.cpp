@@ -8,11 +8,13 @@
 #include <chrono>
 #include <iostream>
 
+#include "servo.hpp"
 #include "lightsensor.hpp"
 #include "button.hpp"
+#include "accelerometer.hpp"
 
 // Objects
-TFT_eSPI tft = TFT_eSPI();
+TFT_eSPI tft = TFT_eSPI(); // 135 x 240 resolution
 Servo myservo;
 LSM6DSO myIMU;
 
@@ -56,16 +58,29 @@ void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
   myservo.attach(servoPin);
 
+  // Initialize accelerometer board
+  Wire.begin();
+  if( myIMU.begin() )
+    Serial.println("Ready.");
+  else { 
+    Serial.println("Could not connect to IMU.");
+    Serial.println("Freezing");
+    while(1)
+      delay(2000);
+  }
+  if( myIMU.initialize(BASIC_SETTINGS) ) // was HARD_INT_SETTINGS before
+    Serial.println("Settings Loaded.");
+
   intensityScore = 0;
 }
-
+///*
 void loop() {
   game_done = false;
   ticksInGoalScore = 0;
-  rndm_game_choice = random(0,2);
+  rndm_game_choice = random(3);
   auto startTime = std::chrono::steady_clock::now();
 
-  goal_intensity_score = random(0, 100);
+  goal_intensity_score = random(0, 101);
 
   tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
 
@@ -102,21 +117,23 @@ void loop() {
       //Light sensor game
       case 1:
         digitalWrite(yellowLedPin, HIGH);
-        //intensityScore = lightSensorTick(myservo, servoPin, lightSensorPin);
+        intensityScore = lightSensorTick(lightSensorPin);
         delay(50);
         break;
-      //Gyroscope game
+      //Accelerometer game
       case 2:
         digitalWrite(redLedPin, HIGH);
-        //intensityScore = gyroscopeSensorTick(myservo, servoPin, lightSensorPin);
-        game_done = true;
-        delay(2000);
+        intensityScore = accelSensorTick(myIMU);
+        delay(50);
         break;
     }
 
-    tft.fillScreen(TFT_BLACK);
-    tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
+    // Display measured intensity score on screen and servo motor
+    tft.fillRect(0, 60, 135, 50, TFT_BLACK);
     tft.drawNumber(intensityScore, x_coordinate, y_coordinate + 60);
+    myservo.write(convertIntensityToDegrees(intensityScore));
+
+    // Check if measured intensity score meets target intensity score for 20 game ticks
     if (intensityScore >= goal_intensity_score - 2 and intensityScore <= goal_intensity_score + 2) {
       ticksInGoalScore++;
       if (ticksInGoalScore >= 20) {
@@ -130,3 +147,15 @@ void loop() {
     }
   }
 }
+//*/
+
+/*
+// Light Sensor Test: lightSensorTick
+// Accelerometer Test: accelSensorTick
+void loop() {
+  intensityScore = accelSensorTick(myIMU);
+  tft.fillScreen(TFT_SKYBLUE);
+  tft.drawNumber(intensityScore, x_coordinate, y_coordinate);
+  delay(100);
+}
+*/
