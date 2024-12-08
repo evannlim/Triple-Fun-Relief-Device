@@ -69,7 +69,7 @@ void setup() {
 
   intensityScore = 0;
 }
-/*
+
 void loop() {
   game_done = false;
   ticksInGoalScore = 0;
@@ -138,11 +138,15 @@ void loop() {
       ticksInGoalScore = 0;
     }
   }
-} */
+}
 
+/*
+// Light Sensor Test: lightSensorTick
+// Accelerometer Test: accelSensorTick
 void loop() {
   intensityScore = accelSensorTick(myIMU);
   tft.fillScreen(TFT_BLACK);
   tft.drawNumber(intensityScore, x_coordinate, y_coordinate);
   delay(100);
 }
+*/

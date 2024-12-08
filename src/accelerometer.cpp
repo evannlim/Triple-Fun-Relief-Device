@@ -1,10 +1,14 @@
 #include <accelerometer.hpp>
 
 int accelSensorTick(LSM6DSO myIMU) {
-  float accelReading = myIMU.readFloatAccelY();
-  return convertAccelReadingToIntensity(accelReading);
+  float accelXReading = abs(myIMU.readFloatAccelX());
+  float accelYReading = abs(myIMU.readFloatAccelY());
+  if (accelXReading > accelYReading)
+    return convertAccelReadingToIntensity(accelXReading);
+  else
+    return convertAccelReadingToIntensity(accelYReading);
 }
 
 int convertAccelReadingToIntensity(float accelReading) {
-    return abs(accelReading * 100);
+    return accelReading * 100;
 }
