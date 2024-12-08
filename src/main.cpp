@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "lightsensor.hpp"
+#include "accelerometer.hpp"
 
 // Objects
 TFT_eSPI tft = TFT_eSPI();
@@ -53,9 +54,22 @@ void setup() {
   pinMode(lightSensorPin, INPUT);
   myservo.attach(servoPin);
 
+  // Initialize accelerometer board
+  Wire.begin();
+  if( myIMU.begin() )
+    Serial.println("Ready.");
+  else { 
+    Serial.println("Could not connect to IMU.");
+    Serial.println("Freezing");
+    while(1)
+      delay(2000);
+  }
+  if( myIMU.initialize(BASIC_SETTINGS) ) // was HARD_INT_SETTINGS before
+    Serial.println("Settings Loaded.");
+
   intensityScore = 0;
 }
-
+/*
 void loop() {
   game_done = false;
   ticksInGoalScore = 0;
@@ -99,13 +113,13 @@ void loop() {
       //Light sensor game
       case 1:
         digitalWrite(yellowLedPin, HIGH);
-        intensityScore = lightSensorTick(myservo, servoPin, lightSensorPin);
+        intensityScore = lightSensorTick(lightSensorPin);
         delay(50);
         break;
-      //Gyroscope game
+      //Accelerometer game
       case 2:
         digitalWrite(redLedPin, HIGH);
-        //intensityScore = gyroscopeSensorTick(myservo, servoPin, lightSensorPin);
+        intensityScore = accelSensorTick(myIMU);
         game_done = true;
         delay(2000);
         break;
@@ -124,4 +138,11 @@ void loop() {
       ticksInGoalScore = 0;
     }
   }
+} */
+
+void loop() {
+  intensityScore = accelSensorTick(myIMU);
+  tft.fillScreen(TFT_BLACK);
+  tft.drawNumber(intensityScore, x_coordinate, y_coordinate);
+  delay(100);
 }
