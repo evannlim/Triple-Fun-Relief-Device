@@ -109,7 +109,6 @@ void loop() {
   }
 
   while (not game_done) {
-    rndm_game_choice = 0;
     switch (rndm_game_choice) {
       //Button game
       case 0:
