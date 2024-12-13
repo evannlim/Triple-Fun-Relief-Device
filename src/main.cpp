@@ -129,15 +129,17 @@ void loop() {
         break;
     }
 
+    /*
     // Display measured intensity score on screen
     tft.fillRect(0, 60, 135, 50, TFT_BLACK);
     tft.drawNumber(intensityScore, x_coordinate, y_coordinate + 60);
+    */
 
     // Display measured intensity score on servo motor
     myservo.write(convertIntensityToDegrees(intensityScore));
 
-    // Check if measured intensity score meets target intensity score for 20 game ticks
-    if (intensityScore >= goal_intensity_score - 2 and intensityScore <= goal_intensity_score + 2) {
+    // Check if measured intensity score meets target intensity score for 100 game ticks
+    if (intensityScore >= goal_intensity_score - 20 and intensityScore <= goal_intensity_score + 20) {
       ticksInGoalScore++;
       if (ticksInGoalScore >= 20) {
         game_done = true;
@@ -149,7 +151,7 @@ void loop() {
       ticksInGoalScore = 0;
     }
 
-    delay(50); // ticks are every 50 miliseconds
+    delay(10); // ticks are every 50 miliseconds
   }
 }
 //*/
