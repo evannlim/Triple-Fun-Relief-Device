@@ -79,15 +79,17 @@ void loop() {
   ticksInGoalScore = 0;
   rndm_game_choice = random(3);
   auto startTime = std::chrono::steady_clock::now();
+  initButtonState();
 
+  // Show target intensity on screen
   goal_intensity_score = random(0, 101);
-
   tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
 
   digitalWrite(blueLedPin, LOW);
   digitalWrite(redLedPin, LOW);
   digitalWrite(yellowLedPin, LOW);
 
+  // Fun startup sequence
   for (int i=20; i > -1; --i) {
     if (i % 3 == 0) {
       digitalWrite(redLedPin, HIGH);
@@ -112,31 +114,31 @@ void loop() {
       //Button game
       case 0:
         digitalWrite(blueLedPin, HIGH);
-        intensityScore = buttonTickBPM(buttonPin, intensityScore, 20);
+        intensityScore = buttonTick(buttonPin);
         break;
       //Light sensor game
       case 1:
         digitalWrite(yellowLedPin, HIGH);
         intensityScore = lightSensorTick(lightSensorPin);
-        delay(50);
         break;
       //Accelerometer game
       case 2:
         digitalWrite(redLedPin, HIGH);
         intensityScore = accelSensorTick(myIMU);
-        delay(50);
         break;
     }
 
-    // Display measured intensity score on screen and servo motor
+    // Display measured intensity score on screen
     tft.fillRect(0, 60, 135, 50, TFT_BLACK);
     tft.drawNumber(intensityScore, x_coordinate, y_coordinate + 60);
+
+    // Display measured intensity score on servo motor
     myservo.write(convertIntensityToDegrees(intensityScore));
 
-    // Check if measured intensity score meets target intensity score for 20 game ticks
+    // Check if measured intensity score meets target intensity score for 100 game ticks
     if (intensityScore >= goal_intensity_score - 2 and intensityScore <= goal_intensity_score + 2) {
       ticksInGoalScore++;
-      if (ticksInGoalScore >= 20) {
+      if (ticksInGoalScore >= 100) {
         game_done = true;
         auto elapsedTime = std::chrono::steady_clock::now() - startTime;
         tft.drawNumber(999, x_coordinate, y_coordinate + 60);
@@ -145,6 +147,8 @@ void loop() {
     else {
       ticksInGoalScore = 0;
     }
+
+    delay(10); // ticks are every 10 miliseconds
   }
 }
 //*/
