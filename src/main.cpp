@@ -50,10 +50,12 @@ void setup() {
   tft.fillScreen(TFT_BLACK);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
-  // Initialize light sensor
+  // Initialize LED bulbs
   pinMode(redLedPin, OUTPUT);
   pinMode(yellowLedPin, OUTPUT);
   pinMode(blueLedPin, OUTPUT);
+
+  // Initialize light sensor and pin
   pinMode(lightSensorPin, INPUT);
   pinMode(buttonPin, INPUT_PULLUP);
   myservo.attach(servoPin);
@@ -134,10 +136,10 @@ void loop() {
     // Display measured intensity score on servo motor
     myservo.write(convertIntensityToDegrees(intensityScore));
 
-    // Check if measured intensity score meets target intensity score for 100 game ticks
+    // Check if measured intensity score meets target intensity score for 20 game ticks
     if (intensityScore >= goal_intensity_score - 2 and intensityScore <= goal_intensity_score + 2) {
       ticksInGoalScore++;
-      if (ticksInGoalScore >= 100) {
+      if (ticksInGoalScore >= 20) {
         game_done = true;
         auto elapsedTime = std::chrono::steady_clock::now() - startTime;
         tft.drawNumber(999, x_coordinate, y_coordinate + 60);
@@ -147,7 +149,7 @@ void loop() {
       ticksInGoalScore = 0;
     }
 
-    delay(10); // ticks are every 10 miliseconds
+    delay(50); // ticks are every 50 miliseconds
   }
 }
 //*/

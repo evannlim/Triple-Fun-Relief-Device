@@ -1,18 +1,4 @@
 #include <button.hpp>
-/*
-extern float runningAverage = 0;
-extern bool lastPressed = 1;
-
-const float decayRate = 0.98;
-const int gain_per_press = 4;
-
-const int reset_time_in_ms = 1000;
-const int beat_time_interval_in_ms = 30000;
-
-extern int last_press_timestamp = 0;
-extern int tick_counter = -1;
-extern bool firstRun = true;
-*/
 
 bool stillPressed;
 
@@ -67,7 +53,7 @@ int buttonTick(int buttonPin) {
     stillPressed = false;
 
     // if the button is not pressed for a long enough period
-    if(tickCounter - lastPressTick > 98)
+    if(tickCounter - lastPressTick > 19)
       buttonIntensityScore = 0;
   }
 
