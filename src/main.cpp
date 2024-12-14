@@ -74,6 +74,10 @@ void setup() {
   if( myIMU.initialize(BASIC_SETTINGS) ) // was HARD_INT_SETTINGS before
     Serial.println("Settings Loaded.");
 
+  // Connect to wifi
+  connect_to_wifi();
+
+  // Intensity score is initially 0
   intensityScore = 0;
 }
 ///*
@@ -146,7 +150,11 @@ void loop() {
       if (ticksInGoalScore >= 100) {
         game_done = true;
         auto elapsedTime = std::chrono::steady_clock::now() - startTime;
+        long elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(elapsedTime).count();
         tft.drawString("Ya!", x_coordinate, y_coordinate + 60);
+
+        // Send data to cloud
+        send_data(rndm_game_choice, elapsedSeconds);
       }
     }
     else {

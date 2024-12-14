@@ -49,7 +49,7 @@ const char * root_ca = \
   "q/xKzj3O9hFh/g==\n" \
   "-----END CERTIFICATE-----\n";
 
-const String sasToken = "SharedAccessSignature sr=147Group38.azure-devices.net%2Fdevices%2F147esp32&sig=IV4EthQsp0nx4YTaacicQ7TnffKxzwkZ6ZXuz5JuwN4%3D&se=1732305567";
+const String sasToken = "SharedAccessSignature sr=147Group38.azure-devices.net%2Fdevices%2F147esp32&sig=c9LbSAiu3eEVTofOQVp0Is6vFms3AmIfSvAuFxwpE%2FM%3D&se=1734175694";
 
 // Code from lab 4
 void nvs_access() {
@@ -121,7 +121,7 @@ int connect_to_wifi() {
     }
     delay(500);
     Serial.print(".");
-    counter++;
+    ++counter;
   }
 
   Serial.println("");
@@ -133,14 +133,14 @@ int connect_to_wifi() {
   return 0;
 }
 
-void send_data() {
+void send_data(int gameMode, long elapsedSeconds) {
   HTTPClient http;
   String url = "https://" + iothubName + ".azure-devices.net/devices/" +
                 deviceName + "/messages/events?api-version=2016-11-14";
   http.begin(url, root_ca); //Specify the URL and certificate
   http.addHeader("Authorization", sasToken);
   http.addHeader("Content-Type", "application/json");
-  std::string payload = "1 2 3 4 5 6 7 8 9"; //"Humidity: " + std::to_string(humidity) + ", Temperature: " + std::to_string(temperature)
+  std::string payload = std::to_string(gameMode) + " " + std::to_string(elapsedSeconds);
   int httpCode = http.POST(payload.c_str());
 
   Serial.println("HTTP POST sent");
