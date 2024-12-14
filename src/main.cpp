@@ -12,6 +12,7 @@
 #include "lightsensor.hpp"
 #include "button.hpp"
 #include "accelerometer.hpp"
+#include "azure_connection.hpp"
 
 // Objects
 TFT_eSPI tft = TFT_eSPI(); // 135 x 240 resolution
@@ -73,6 +74,10 @@ void setup() {
   if( myIMU.initialize(BASIC_SETTINGS) ) // was HARD_INT_SETTINGS before
     Serial.println("Settings Loaded.");
 
+  // Connect to wifi
+  connect_to_wifi();
+
+  // Intensity score is initially 0
   intensityScore = 0;
 }
 ///*
@@ -107,7 +112,17 @@ void loop() {
   }
 
   // Show target intensity on screen
-  goal_intensity_score = random(6, 101);
+  // Different random goal intensity scores for different games to prevent instant wins
+  if(rndm_game_choice == 1)   // light sensor, sense current light level
+  {
+    goal_intensity_score = random(0, 101);
+    intensityScore = lightSensorTick(lightSensorPin);
+    while(intensityScore >= goal_intensity_score - 6 and intensityScore <= goal_intensity_score + 6)
+      goal_intensity_score = random(0, 101);
+  }
+  else    // button and accelerometer, don't start at 0
+    goal_intensity_score = random(6, 101);
+  
   tft.fillScreen(TFT_BLACK);
   tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
 
@@ -145,7 +160,11 @@ void loop() {
       if (ticksInGoalScore >= 100) {
         game_done = true;
         auto elapsedTime = std::chrono::steady_clock::now() - startTime;
+        long elapsedSeconds = std::chrono::duration_cast<std::chrono::seconds>(elapsedTime).count();
         tft.drawString("Ya!", x_coordinate, y_coordinate + 60);
+
+        // Send data to cloud
+        send_data(rndm_game_choice, elapsedSeconds);
       }
     }
     else {
