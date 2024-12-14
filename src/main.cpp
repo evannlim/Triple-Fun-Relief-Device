@@ -12,6 +12,7 @@
 #include "lightsensor.hpp"
 #include "button.hpp"
 #include "accelerometer.hpp"
+#include "azure_connection.hpp"
 
 // Objects
 TFT_eSPI tft = TFT_eSPI(); // 135 x 240 resolution
