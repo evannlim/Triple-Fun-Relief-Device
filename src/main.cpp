@@ -83,10 +83,6 @@ void loop() {
   auto startTime = std::chrono::steady_clock::now();
   initButtonState();
 
-  // Show target intensity on screen
-  goal_intensity_score = random(0, 101);
-  tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
-
   digitalWrite(blueLedPin, LOW);
   digitalWrite(redLedPin, LOW);
   digitalWrite(yellowLedPin, LOW);
@@ -109,6 +105,11 @@ void loop() {
       digitalWrite(blueLedPin, LOW);
     }
   }
+
+  // Show target intensity on screen
+  goal_intensity_score = random(0, 101);
+  tft.fillScreen(TFT_BLACK);
+  tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
 
   while (not game_done) {
     switch (rndm_game_choice) {
@@ -139,19 +140,19 @@ void loop() {
     myservo.write(convertIntensityToDegrees(intensityScore));
 
     // Check if measured intensity score meets target intensity score for 100 game ticks
-    if (intensityScore >= goal_intensity_score - 20 and intensityScore <= goal_intensity_score + 20) {
+    if (intensityScore >= goal_intensity_score - 10 and intensityScore <= goal_intensity_score + 10) {
       ticksInGoalScore++;
-      if (ticksInGoalScore >= 20) {
+      if (ticksInGoalScore >= 100) {
         game_done = true;
         auto elapsedTime = std::chrono::steady_clock::now() - startTime;
-        tft.drawNumber(999, x_coordinate, y_coordinate + 60);
+        tft.drawString("Ya!", x_coordinate, y_coordinate + 60);
       }
     }
     else {
       ticksInGoalScore = 0;
     }
 
-    delay(10); // ticks are every 50 miliseconds
+    delay(10); // ticks are every 10 miliseconds
   }
 }
 //*/

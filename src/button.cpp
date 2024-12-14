@@ -53,7 +53,7 @@ int buttonTick(int buttonPin) {
     stillPressed = false;
 
     // if the button is not pressed for a long enough period
-    if(tickCounter - lastPressTick > 19)
+    if(tickCounter - lastPressTick > 98)
       buttonIntensityScore = 0;
   }
 
@@ -64,8 +64,6 @@ int buttonTick(int buttonPin) {
 void calculateButtonIntensityScore()
 {
   int avgDuration = (previousDuration + currentDuration) / 2;
-
-  Serial.println(avgDuration);
 
   if (avgDuration > 70)
     avgDuration = 70;
