@@ -112,7 +112,17 @@ void loop() {
   }
 
   // Show target intensity on screen
-  goal_intensity_score = random(6, 101);
+  // Different random goal intensity scores for different games to prevent instant wins
+  if(rndm_game_choice == 1)   // light sensor, sense current light level
+  {
+    goal_intensity_score = random(0, 101);
+    intensityScore = lightSensorTick(lightSensorPin);
+    while(intensityScore >= goal_intensity_score - 6 and intensityScore <= goal_intensity_score + 6)
+      goal_intensity_score = random(0, 101);
+  }
+  else    // button and accelerometer, don't start at 0
+    goal_intensity_score = random(6, 101);
+  
   tft.fillScreen(TFT_BLACK);
   tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
 
