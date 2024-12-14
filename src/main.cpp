@@ -107,7 +107,7 @@ void loop() {
   }
 
   // Show target intensity on screen
-  goal_intensity_score = random(0, 101);
+  goal_intensity_score = random(6, 101);
   tft.fillScreen(TFT_BLACK);
   tft.drawNumber(goal_intensity_score, x_coordinate, y_coordinate);
 
@@ -140,7 +140,7 @@ void loop() {
     myservo.write(convertIntensityToDegrees(intensityScore));
 
     // Check if measured intensity score meets target intensity score for 100 game ticks
-    if (intensityScore >= goal_intensity_score - 10 and intensityScore <= goal_intensity_score + 10) {
+    if (intensityScore >= goal_intensity_score - 5 and intensityScore <= goal_intensity_score + 5) {
       ticksInGoalScore++;
       if (ticksInGoalScore >= 100) {
         game_done = true;
